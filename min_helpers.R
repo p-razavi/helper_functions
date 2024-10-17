@@ -37,3 +37,23 @@ quantify_nas <- function(data){
   }
   return(output_table)
 }
+
+#==================
+#find duplicate rows in a dataframe
+#==================
+#this function will find duplicate rows in a dataframe (df) based on the columns you specify.
+  find_duplicates <- function(df, columns) {
+    #check if the provided columns exist in the dataframe
+    if (!all(columns %in% names(df))) {
+      stop("Some columns provided are not in the dataframe")
+    }
+    
+    #find duplicates based on the specified columns
+    duplicated_rows <- df %>%
+      group_by(across(all_of(columns))) %>%
+      filter(n() > 1) %>%
+      ungroup() # Ungroup after filtering
+    
+    #return the duplicated rows
+    return(duplicated_rows)
+  }
